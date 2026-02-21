@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DTMF Sinyal Sentezi</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>DTMF Sinyal Sentezi</h1>
+</header>
+
+<div class="layout">
+
+  <!-- TOP ROW: Tuş Takımı (sol) + Grafikler (sağ) -->
+  <div class="top-row">
+
+    <!-- Sol: Tuş Takımı -->
+    <div class="card">
+      <div class="card-header">
+        Tuş Takımı
+        <span id="statusBadge"
+          style="font-size:0.7rem;padding:3px 10px;border-radius:20px;
+                 background:var(--bg);color:var(--muted);
+                 border:1px solid var(--border);font-weight:500;">
+          BEKLEMEDE
+        </span>
+      </div>
+      <div class="card-body">
+        <div class="info-strip">
+          <div class="info-item">
+            <span class="lbl">Tuş</span>
+            <span class="val" id="dispKey">—</span>
+          </div>
+          <div class="info-item">
+            <span class="lbl">Durum</span>
+            <span class="val" id="dispStatus">—</span>
+          </div>
+          <div class="info-item">
+            <span class="lbl">f_low</span>
+            <span class="val" id="dispLow">— Hz</span>
+          </div>
+          <div class="info-item">
+            <span class="lbl">f_high</span>
+            <span class="val" id="dispHigh">— Hz</span>
+          </div>
+        </div>
+        <!-- Tuşlar JS tarafından oluşturulur -->
+        <div class="keypad-grid" id="keypad"></div>
+      </div>
+    </div>
+
+    <!-- Sağ: Grafikler -->
+    <div class="charts-col">
+
+      <div class="card">
+        <div class="card-header">
+          <span>Zaman Uzayı — Sinüzoidal Dalga</span>
+          <span class="chart-label" id="waveInfo">—</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="waveCanvas"></canvas>
+          <div class="chart-idle" id="waveIdle">Bir tuşa basın</div>
+        </div>
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#93b4f4"></div>
+            f_low bileşeni
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#f4a090"></div>
+            f_high bileşeni
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#2563eb"></div>
+            DTMF toplamı x(t)
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span>Frekans Uzayı — FFT Spektrum</span>
+          <span class="chart-label" id="specInfo">—</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="specCanvas"></canvas>
+          <div class="chart-idle" id="specIdle">Bir tuşa basın</div>
+        </div>
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#2563eb"></div>
+            DTMF bileşenleri
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ALT: Sekans Çal — tam genişlik -->
+  <div class="card">
+    <div class="card-header">Sekans Çal</div>
+    <div class="card-body">
+      <div class="seq-row">
+        <input class="seq-input" id="seqInput" type="text" maxlength="60"
+          placeholder="0-9 A B C D * #"
+          value="123456789*0#">
+        <button class="btn btn-primary" id="seqPlayBtn" onclick="playSequence()">▶ Çal</button>
+        <button class="btn btn-ghost"   id="seqStopBtn" onclick="stopSequence()" disabled>■ Durdur</button>
+      </div>
+      <div class="seq-progress" id="seqProgress">
+        <div class="seq-progress-bar"  id="seqProgressBar"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ES Modülü olarak yükle — tarayıcı import/export'u otomatik çözer -->
+<script type="module" src="modules\js\app.js"></script>
+
+</body>
+</html>
